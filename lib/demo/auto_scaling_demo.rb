@@ -49,8 +49,8 @@ class AutoScalingDemo
     net    = swytch.ipv4_nets[0]
 
     # search loadbalancer
-    puts 'searching loadbalancer'
-    lb = @api.appliance.get_by_id(@config['lb_id'].to_s)
+#     puts 'searching loadbalancer'
+#     lb = @api.appliance.get_by_id(@config['lb_id'].to_s)
 
     {
       servers: servers,
@@ -58,7 +58,7 @@ class AutoScalingDemo
       router: router,
       swytch: swytch,
       net: net,
-      lb: lb
+#       lb: lb
     }
   end
 
@@ -127,28 +127,27 @@ class AutoScalingDemo
       puts '[ERROR] There are no practicable IP addresses.'
       return
     end
-    puts "[ipaddresses]#{ipaddresses}"
     # collect_unused_ipv4_addressesで取得される配列にVIPが含まれているので除外
-    ipaddresses.delete(resources[:lb].virtual_ips[0].virtual_ip_address)
+#     ipaddresses.delete(resources[:lb].virtual_ips[0].virtual_ip_address)
 
     # duplicate a server
     new_server = resources[:servers][0].easy_duplicate(ipaddresses[0], true)
     new_server.boot
 
     # add a server to loadbalancer
-    puts 'add a server to loadbalancer'
-    lb     = resources[:lb]
-    lb_vip = lb.virtual_ips[0]
-    lb_vip.add_server(ip: ipaddresses[0], port: 80, protocol: 'ping', enabled: 'true')
-    lb.save
-    lb.apply
+#     puts 'add a server to loadbalancer'
+#     lb     = resources[:lb]
+#     lb_vip = lb.virtual_ips[0]
+#     lb_vip.add_server(ip: ipaddresses[0], port: 80, protocol: 'ping', enabled: 'true')
+#     lb.save
+#     lb.apply
 
     resources[:servers] << new_server
   end
 
   def remove_server(resources)
     server = resources[:servers].pop
-    lb     = resources[:lb]
+#     lb     = resources[:lb]
 
     # remove a server
     puts 'removing a server'
@@ -165,11 +164,11 @@ class AutoScalingDemo
     end
 
     # remove a lb_server
-    puts 'removing a lb_server'
-    lb_vip = lb.virtual_ips[0]
-    lb_vip.remove_server_by_address(server.ifaces[0].user_ip_address)
-    lb.save
-    lb.reload
+#     puts 'removing a lb_server'
+#     lb_vip = lb.virtual_ips[0]
+#     lb_vip.remove_server_by_address(server.ifaces[0].user_ip_address)
+#     lb.save
+#     lb.reload
 
     server.destroy
   end
