@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const port = "8000";
+
+const shell = require('shelljs');
 /**
  * Routes Definitions
  */
@@ -22,6 +24,7 @@ app.post("/", (req, res) => {
         console.log('result: ', result)
         fs.writeFile(fileHost, result, 'utf8', function (err) {
             if (err) return console.log(err);
+            shell.exec("/etc/init.d/nginx reload")
         });
     });
     res.status(200).send("SET HOST success");
