@@ -141,6 +141,8 @@ class AutoScalingDemo
 #     lb_vip.add_server(ip: ipaddresses[0], port: 80, protocol: 'ping', enabled: 'true')
 #     lb.save
 #     lb.apply
+    # Add a server
+    writeFile(ipaddresses[0], true)
 
     resources[:servers] << new_server
   end
@@ -169,7 +171,8 @@ class AutoScalingDemo
 #     lb_vip.remove_server_by_address(server.ifaces[0].user_ip_address)
 #     lb.save
 #     lb.reload
-
+    # remove a lb_server
+    writeFile(server.ifaces[0].user_ip_address, false)
     server.destroy
   end
 
