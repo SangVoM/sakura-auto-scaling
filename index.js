@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post("/", (req, res) => {
     const { IP, flag } = req.body;
-    const fileHost = 'host.txt'
+    const fileHost = '/etc/nginx/conf.d/default.conf'
     const ipReplace = `server ${IP};`
     let result = null
     fs.readFile(fileHost, 'utf8', function (err,data) {
@@ -24,7 +24,7 @@ app.post("/", (req, res) => {
         console.log('result: ', result)
         fs.writeFile(fileHost, result, 'utf8', function (err) {
             if (err) return console.log(err);
-            shell.exec("/etc/init.d/nginx reload")
+            shell.exec("sudo /etc/init.d/nginx reload")
         });
     });
     res.status(200).send("SET HOST success");
