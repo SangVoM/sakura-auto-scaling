@@ -142,7 +142,7 @@ class AutoScalingDemo
 #     lb.save
 #     lb.apply
     # Add a server
-    writeFile(ipaddresses[0], true)
+    writeFile(ipaddresses[0], false)
 
     resources[:servers] << new_server
   end
@@ -172,7 +172,7 @@ class AutoScalingDemo
 #     lb.save
 #     lb.reload
     # remove a lb_server
-    writeFile(server.ifaces[0].user_ip_address, false)
+    writeFile(server.ifaces[0].user_ip_address, true)
     server.destroy
   end
 
